@@ -1,30 +1,31 @@
 package com.example.tmap04
 
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import com.example.tmap04.ui.theme.Tmap04Theme
 
-class MainActivity : ComponentActivity() {
+class DisplayInfoActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val personName = intent.getStringExtra("personName") ?: ""
+        val personDateOfBirth = intent.getStringExtra("personDateOfBirth") ?: ""
+
         setContent {
             Tmap04Theme {
                 // A surface container using the 'background' color from the theme
@@ -32,42 +33,15 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    GoToForm()
+                    DisplayInfo(personName, personDateOfBirth)
                 }
             }
         }
     }
-
-    override fun onStart() {
-        super.onStart()
-        Log.d("MainActivity", "started")
-    }
-
-    override fun onResume() {
-        super.onResume()
-        Log.d("MainActivity", "resumed")
-    }
-
-    override fun onPause() {
-        super.onPause()
-        Log.d("MainActivity", "paused")
-    }
-
-    override fun onStop() {
-        super.onStop()
-        Log.d("MainActivity", "stopped")
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.d("MainActivity", "destroyed")
-    }
 }
 
 @Composable
-fun GoToForm() {
-    val context = LocalContext.current
-
+fun DisplayInfo(personName: String, personDateOfBirth: String) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -75,21 +49,21 @@ fun GoToForm() {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text (
-            text = "Welcome!",
-            style = TextStyle(fontSize = 12.em),
+        Text(
+            text = "Person Name: $personName",
+            style = TextStyle(fontSize = 5.em),
             modifier = Modifier.padding(bottom = 16.dp)
         )
-        Text (
-            text = "Click 'Start' to enter your personal information",
-            style = TextStyle(fontSize = 4.em),
+        Text(
+            text = "Date of birth: $personDateOfBirth",
+            style = TextStyle(fontSize = 5.em),
             modifier = Modifier.padding(bottom = 16.dp)
         )
-        Button(onClick = {
-            val intent = Intent(context, FillFormActivity::class.java)
-            context.startActivity(intent)
-        }) {
-            Text(text = "Start")
-        }
     }
+}
+
+@Preview
+@Composable
+fun DisplayInfoPreview() {
+    DisplayInfo("Natalie Hrusova", "2001-12-29")
 }
